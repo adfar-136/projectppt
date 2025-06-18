@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IUST University Portal - Project Presentation</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      min-height: 100vh;
+      min-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f0fdfa 100%);
+    }
+    .ppt-slide {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.5s, transform 0.5s;
+      opacity: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .ppt-slide.active {
+      opacity: 1;
+      z-index: 10;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+    .ppt-slide.inactive-left {
+      transform: translateX(-60px);
+    }
+    .ppt-slide.inactive-right {
+      transform: translateX(60px);
+    }
+    .ppt-frame {
+      background: linear-gradient(135deg, #f0f6ff 0%, #e0f7fa 100%);
+      box-shadow: 0 8px 32px 0 rgba(31, 41, 55, 0.18), 0 0 0 6px #e0e7ff inset;
+      border-radius: 2.5rem;
+      padding: 3rem 4vw;
+      width: 90vw;
+      max-width: 1100px;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+      position: relative;
+      border: 2px solid #bae6fd;
+    }
+    .ppt-logo-center {
+      display: block;
+      margin: 0 auto 1.5rem auto;
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+    }
+    .ppt-logo-slide {
+      display: block;
+      margin: 0 auto 1.5rem auto;
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+    .ppt-title-home {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #2563eb;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      letter-spacing: -1px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ppt-univ {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #22223b;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .ppt-subtitle {
+      font-size: 1.3rem;
+      color: #374151;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .ppt-team {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 2.5rem;
+      margin-bottom: 0.5rem;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .ppt-team-col {
+      flex: 1;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .ppt-team-col.right {
+      text-align: right;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .ppt-team-bottom {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+    .ppt-logo-global {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      z-index: 20;
+    }
+    .ppt-logo-home {
+      display: block;
+      margin: 2rem auto 2rem auto;
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+    }
+    .ppt-title {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1.5rem;
+      letter-spacing: -1px;
+      background: linear-gradient(90deg, #6366f1 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ppt-section {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 1rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 90vw;
+      background: linear-gradient(90deg, #38bdf8 0%, #2563eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .ppt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    .ppt-table th, .ppt-table td {
+      border: 1px solid #d1d5db;
+      padding: 0.5rem 1rem;
+      text-align: left;
+      font-size: 1rem;
+    }
+    .ppt-table th {
+      background: linear-gradient(90deg, #bae6fd 0%, #a5b4fc 100%);
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .ppt-table td {
+      background: #f0f9ff;
+    }
+    .ppt-progress {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 8px;
+      background: #e0e7ff;
+      z-index: 50;
+    }
+    .ppt-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+      border-radius: 0 8px 8px 0;
+      transition: width 0.4s;
+    }
+    .ppt-nav-btn {
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.45rem 1.3rem;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #2563eb 0%, #38bdf8 100%);
+      color: white;
+      margin: 0 0.5rem;
+      box-shadow: 0 2px 8px 0 rgba(31, 41, 55, 0.13);
+      transition: background 0.2s, box-shadow 0.2s;
+      border: 2px solid #a5b4fc;
+    }
+    .ppt-nav-btn:disabled {
+      background: #cbd5e1;
+      color: #64748b;
+      cursor: not-allowed;
+      border: 2px solid #e0e7ff;
+    }
+    .ppt-nav-btn:hover:not(:disabled) {
+      background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+      box-shadow: 0 4px 16px 0 rgba(56,189,248,0.15);
+    }
+    .ppt-nav-container {
+      position: absolute;
+      right: 2vw;
+      bottom: 2vh;
+      z-index: 101;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+    .ppt-slide-number {
+      position: absolute;
+      right: 2vw;
+      bottom: 6vh;
+      font-size: 1.1rem;
+      color: #2563eb;
+      background: linear-gradient(90deg, #e0f2fe 0%, #f0f9ff 100%);
+      padding: 0.3rem 1.1rem;
+      border-radius: 9999px;
+      z-index: 100;
+      font-weight: 600;
+      border: 2px solid #bae6fd;
+    }
+    .ppt-logo {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin: 2rem auto 2rem auto;
+      display: block;
+    }
+    .ppt-formal-title {
+      font-size: 2.2rem;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 1.2rem;
+    }
+    .ppt-formal-sub {
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 0.7rem;
+    }
+    .ppt-formal-bold {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .ppt-formal-table th, .ppt-formal-table td {
+      border: 1px solid #222;
+      padding: 0.5rem 1.2rem;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .ppt-formal-table th {
+      background: #f3f4f6;
+      font-weight: 700;
+    }
+    .ppt-formal-table {
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .ppt-formal-remarks {
+      margin: 2rem 0 1rem 0;
+      min-height: 6rem;
+      border-bottom: 1px solid #222;
+      border-top: 1px solid #222;
+      padding: 1rem 0;
+    }
+    .ppt-formal-sign {
+      margin-top: 2.5rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .ppt-home-flex {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+    }
+    .ppt-home-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    .ppt-home-col {
+      flex: 1;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .ppt-home-col.right {
+      text-align: right;
+      font-style: italic;
+      font-weight: 400;
+    }
+    .ppt-home-bottom {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.1rem;
+    }
+    @media (max-width: 700px) {
+      .ppt-frame { padding: 1.2rem 0.5rem; border-radius: 1rem; }
+      .ppt-title { font-size: 2rem; }
+      .ppt-section { font-size: 1.1rem; }
+      .ppt-table th, .ppt-table td { font-size: 0.9rem; }
+      .ppt-title-home { font-size: 1.5rem; }
+      .ppt-univ { font-size: 1.1rem; }
+      .ppt-logo-center { width: 60px; height: 60px; }
+      .ppt-logo-slide { width: 36px; height: 36px; }
+      .ppt-nav-btn { font-size: 0.9rem; padding: 0.3rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="ppt-root"></div>
+  <div class="ppt-progress"><div id="ppt-progress-bar" class="ppt-progress-bar"></div></div>
+  <div id="ppt-slide-number" class="ppt-slide-number"></div>
+  <script>
+    // Slides content (HTML strings)
+    const logoPath = 'logo.jpeg';
+    const slides = [
+      // Slide 1: Modern Presentation Home Slide
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <img src="${logoPath}" alt="IUST Logo" class="ppt-logo-center" />
+        <div class='ppt-univ mb-2'>Islamic University of Science and Technology<br/>Awantipora, Kashmir</div>
+        <div class='ppt-title-home mb-4'>Community Connect Hub</div>
+        <div class='ppt-subtitle mb-6'>Events and Queries simplified</div>
+        <div class='flex flex-col items-center justify-center w-full mb-6'>
+          <div class='font-semibold text-lg mb-1'>Master of Computer Applications</div>
+          <div class='font-medium text-base mb-1'>Dr. Syed Mohsin Saif</div>
+          <div class='font-normal text-base mb-1'>Department of Computer Science</div>
+          <div class='font-normal text-base mb-1'>School of Engineering & Technology</div>
+          <div class='font-normal text-base mb-1'>Islamic University of Science and Technology</div>
+        </div>
+        <div class='font-bold text-lg mt-2'>2025</div>
+      </div>`,
+      // Slide 2: Group Members & Approval
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <img src="${logoPath}" alt="IUST Logo" class="ppt-logo-slide" />
+        <div class='ppt-title mb-2'>Community Connect Hub</div>
+        <div class='ppt-formal-sub mb-4'>Events and Queries simplified</div>
+        <div class='ppt-formal-bold mb-2'>Group Members</div>
+        <table class='ppt-formal-table mx-auto'>
+          <thead><tr><th></th><th>Name</th><th>Roll Number</th></tr></thead>
+          <tbody>
+            <tr><td>1.</td><td>Adfar Rasheed</td><td>MCA-23-16</td></tr>
+            <tr><td>2.</td><td>Sanna Zahoor</td><td>MCA-23-06</td></tr>
+            <tr><td>3.</td><td>Safura Naseer</td><td>MCA-23-17</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 3: Table of Contents
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <img src="${logoPath}" alt="IUST Logo" class="ppt-logo-slide" />
+        <div class='ppt-title mb-4'>Contents</div>
+        <ul class='list-disc text-xl text-gray-900 font-semibold mx-auto' style='margin-left:2rem; text-align:left; display:inline-block;'>
+          <li>Introduction</li>
+          <li>Objective</li>
+          <li>Data Flow & Architecture</li>
+          <li>Data Flow Diagram</li>
+          <li>User Roles & Permissions</li>
+          <li>Authorization & Access Control</li>
+          <li>Data Models & Work Flow
+            <ul class='list-disc ml-8 text-lg font-normal'>
+              <li>Overview of Models</li>
+              <li>Entity Relationship Diagram</li>
+            </ul>
+          </li>
+          <li>Key Features</li>
+          <li>API Endpoints (Sample)</li>
+          <li>Conclusion</li>
+        </ul>
+      </div>`,
+      // Slide 4: Title (old slide 1)
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <img src="${logoPath}" alt="IUST Logo" class="ppt-logo-slide" />
+        <div class='ppt-title mb-2'>IUST University Portal</div>
+        <div class='text-2xl font-semibold mb-4 text-gray-700'>Final Year Project Presentation</div>
+        <div class='text-lg text-gray-600 mb-8 text-center max-w-2xl mx-auto'>A full-stack web application for student council management, events, FAQs, and student engagement at IUST University.</div>
+        <div class='flex flex-row gap-4 mt-8 justify-center'>
+          <span class='inline-block bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-lg font-semibold'>Press <b>→</b> or Next to begin</span>
+        </div>
+      </div>`,
+      // Slide 5: Objective (was Project Overview)
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Objective</div>
+        <div class='mb-4 text-lg text-gray-700'>
+          To make the student council at our university more accessible, active, and efficient by providing a modern digital platform. The student council plays a vital role in student representation, event organization, and fostering engagement. This project aims to streamline council activities, enhance communication, and empower students and administrators through an easy-to-use portal. <br><br>
+          In particular, the platform is designed to simplify event management by making it easy to create events, assign duties, and track participation. This ensures that council-led events are well-organized, responsibilities are clear, and more students can get involved in meaningful ways, ultimately increasing the impact and reach of student activities across the university.
+        </div>
+      </div>`,
+      // Slide 6: Data Flow & Architecture (Text)
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Data Flow & Architecture</div>
+        <div class='mb-4'>
+          <b>Frontend:</b> React & TypeScript, Tailwind CSS<br/>
+          <b>Backend:</b> Node.js/Express.js REST API, MongoDB<br/>
+          <b>Authentication:</b> JWT-based
+        </div>
+        <ol class='list-decimal ml-8 text-gray-700 text-lg'>
+          <li><b>Authentication:</b> Users register/login. JWT tokens are issued and used for protected API requests.</li>
+          <li><b>Student Actions:</b> Students can view their dashboard, apply for council positions, view assigned duties, and interact with the FAQ chatbot.</li>
+          <li><b>Admin Actions:</b> Admins access an admin dashboard to manage events, FAQs, council applications, and assign duties to council members.</li>
+          <li><b>Council Member Flow:</b> When a student's application is approved, they become a council member and can be assigned duties for events.</li>
+          <li><b>FAQ Chatbot:</b> All users can interact with a chatbot that answers questions using the FAQ database.</li>
+        </ol>
+      </div>`,
+      // Slide 7: Data Flow Diagram (Mermaid)
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Data Flow Diagram</div>
+        <div class='mermaid my-6'>
+          graph TD
+            User[User] -- Register/Login --> Auth[Auth API]
+            Auth -- Issues JWT --> User
+            User -- Uses JWT --> Dashboard[Student/Admin Dashboard]
+            Dashboard -- CRUD --> DB[Applications/Events/Duties/FAQs]
+            DB -- Data --> Dashboard
+            Dashboard -- Interacts --> Chatbot[FAQ Chatbot]
+            Chatbot -- Answers --> Dashboard
+        </div>
+      </div>`,
+      // Slide 8: User Roles & Permissions (Intro)
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>User Roles & Permissions</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Role</th><th>Permissions</th></tr></thead>
+          <tbody>
+            <tr><td><b>Student</b></td><td>Register, apply for council, view duties, use chatbot</td></tr>
+            <tr><td><b>Council Member</b></td><td>All student permissions + assigned duties, propose events, internal comms</td></tr>
+            <tr><td><b>Admin</b></td><td>Full management of applications, events, duties, FAQs, analytics</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 9: Student Role
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Role: Student</div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>Register/Login with university-issued student ID</li>
+          <li>Apply for council positions</li>
+          <li>Track application status and feedback</li>
+          <li>View assigned duties (if council member)</li>
+          <li>Update duty status (confirm, decline, complete)</li>
+          <li>Interact with FAQ chatbot</li>
+        </ul>
+      </div>`,
+      // Slide 10: Council Member Role
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Role: Council Member</div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>All student permissions</li>
+          <li>Assigned event duties (view, confirm, decline, complete)</li>
+          <li>Propose new events/initiatives</li>
+          <li>Internal communication & announcements</li>
+          <li>Attendance & participation tracking</li>
+          <li>Request duty swaps (pending admin approval)</li>
+        </ul>
+      </div>`,
+      // Slide 11: Admin Role
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Role: Admin</div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>Review/approve council applications</li>
+          <li>Manage events (create, edit, assign duties)</li>
+          <li>Review event proposals</li>
+          <li>Assign/reassign duties, approve swaps</li>
+          <li>Manage FAQs and chatbot content</li>
+          <li>Send announcements, manage engagement tools</li>
+          <li>Access analytics and reports</li>
+        </ul>
+      </div>`,
+      // Slide 12: Authorization Middleware
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Authorization Middleware</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Middleware</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><b>authenticate</b></td><td>Validates JWT and attaches user to request</td></tr>
+            <tr><td><b>authorizeAdmin</b></td><td>Restricts access to admin-only routes</td></tr>
+            <tr><td><b>authorizeCouncilMember</b></td><td>Restricts access to council member-only routes</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 13: Models (Intro)
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Data Models</div>
+        <div class='mb-4'>The system uses the following main data models:</div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>User</li>
+          <li>Application (Council Application)</li>
+          <li>Duty</li>
+          <li>Event</li>
+          <li>Faq</li>
+          <li>ValidStudentId</li>
+        </ul>
+      </div>`,
+      // Slide 14: ER Diagram (Mermaid)
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full'>
+        <div class='ppt-section mb-4'>Work Flow</div>
+        <div style='display:flex;align-items:center;justify-content:center;width:100%;height:340px;'>
+          <div class='mermaid' style='width:500px;max-width:90vw;height:320px;display:flex;align-items:center;justify-content:center;'>
+            %%{init: {'themeVariables': { 'erNodeWidth': 90, 'erNodeHeight': 60, 'fontSize': 12 }} }%%
+            erDiagram
+              VALIDSTUDENTID ||--|| STUDENT : validates
+              STUDENT ||--o{ APPLICATION : submits
+              APPLICATION }o--|| ADMIN : reviewedBy
+              STUDENT ||--o{ DUTY : assigned
+              DUTY }o--|| EVENT : for
+              DUTY }o--|| ADMIN : assignedBy
+              STUDENT ||--o{ EVENT : proposes
+              EVENT }o--|| ADMIN : organizedBy
+              FAQ }o--|| ADMIN : createdBy
+          </div>
+        </div>
+      </div>`,
+      // Slide 15: User Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: User</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>name</td><td>String</td><td>User's full name</td></tr>
+            <tr><td>email</td><td>String (unique)</td><td>User's email address</td></tr>
+            <tr><td>password</td><td>String (hashed)</td><td>Hashed password</td></tr>
+            <tr><td>role</td><td>'student' | 'admin'</td><td>User role</td></tr>
+            <tr><td>studentId</td><td>String (unique)</td><td>University student ID</td></tr>
+            <tr><td>department</td><td>String</td><td>Department name</td></tr>
+            <tr><td>year</td><td>String</td><td>Year of study</td></tr>
+            <tr><td>isCouncilMember</td><td>Boolean</td><td>True if council member</td></tr>
+            <tr><td>profileImage</td><td>String (optional)</td><td>Profile image URL</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Account creation date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 16: Application Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: Application</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>student</td><td>Reference to User</td><td>Applicant</td></tr>
+            <tr><td>motivation</td><td>String</td><td>Motivation statement</td></tr>
+            <tr><td>experience</td><td>String</td><td>Relevant experience</td></tr>
+            <tr><td>skills</td><td>[String]</td><td>Skills list</td></tr>
+            <tr><td>position</td><td>Enum</td><td>Applied position</td></tr>
+            <tr><td>status</td><td>Enum</td><td>Application status</td></tr>
+            <tr><td>reviewedBy</td><td>Reference to User</td><td>Admin reviewer</td></tr>
+            <tr><td>reviewComments</td><td>String</td><td>Admin feedback</td></tr>
+            <tr><td>interests</td><td>[String]</td><td>Interests</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Application date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 17: Duty Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: Duty</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>event</td><td>Reference to Event</td><td>Related event</td></tr>
+            <tr><td>student</td><td>Reference to User</td><td>Council member</td></tr>
+            <tr><td>role</td><td>Enum</td><td>Duty role</td></tr>
+            <tr><td>status</td><td>Enum</td><td>Duty status</td></tr>
+            <tr><td>assignedBy</td><td>Reference to User</td><td>Admin assigner</td></tr>
+            <tr><td>feedback</td><td>String</td><td>Admin feedback</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Assignment date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 18: Event Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: Event</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>title</td><td>String</td><td>Event title</td></tr>
+            <tr><td>description</td><td>String</td><td>Event description</td></tr>
+            <tr><td>location</td><td>String</td><td>Event location</td></tr>
+            <tr><td>date</td><td>Date</td><td>Event date</td></tr>
+            <tr><td>startTime</td><td>String</td><td>Start time</td></tr>
+            <tr><td>endTime</td><td>String</td><td>End time</td></tr>
+            <tr><td>organizer</td><td>Reference to User</td><td>Admin organizer</td></tr>
+            <tr><td>status</td><td>Enum</td><td>Event status</td></tr>
+            <tr><td>image</td><td>String (optional)</td><td>Event image</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Creation date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 19: Faq Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: Faq</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>question</td><td>String (unique)</td><td>FAQ question</td></tr>
+            <tr><td>answer</td><td>String</td><td>FAQ answer</td></tr>
+            <tr><td>tags</td><td>[String]</td><td>Tags</td></tr>
+            <tr><td>category</td><td>Enum</td><td>FAQ category</td></tr>
+            <tr><td>createdBy</td><td>Reference to User</td><td>Admin creator</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Creation date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 20: ValidStudentId Model Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Model: ValidStudentId</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>studentId</td><td>String (unique)</td><td>Student ID</td></tr>
+            <tr><td>createdAt</td><td>Date</td><td>Creation date</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 21: Key Features
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>Key Features</div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>Role-based dashboards for students and admins</li>
+          <li>Council application workflow</li>
+          <li>Automated duty assignment</li>
+          <li>FAQ chatbot</li>
+          <li>Secure authentication (JWT)</li>
+        </ul>
+      </div>`,
+      // Slide 22: API Endpoints Table
+      `<div class='ppt-frame'>
+        <div class='ppt-section'>API Endpoints (Sample)</div>
+        <table class='ppt-table'>
+          <thead><tr><th>Endpoint</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td>/api/auth/register</td><td>Register new user</td></tr>
+            <tr><td>/api/auth/login</td><td>Login</td></tr>
+            <tr><td>/api/applications</td><td>CRUD for council applications</td></tr>
+            <tr><td>/api/duties</td><td>CRUD for duties</td></tr>
+            <tr><td>/api/events</td><td>CRUD for events</td></tr>
+            <tr><td>/api/faqs</td><td>CRUD for FAQs</td></tr>
+            <tr><td>/api/users/council-members</td><td>List all council members</td></tr>
+          </tbody>
+        </table>
+      </div>`,
+      // Slide 23: Conclusion
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <div class='ppt-title mb-6'>Conclusion</div>
+        <div class='text-xl text-gray-700 mb-8 max-w-2xl mx-auto'>
+          This portal streamlines student council management, event organization, and student engagement, providing a modern, secure, and user-friendly experience for both students and administrators at IUST University.
+        </div>
+        <hr class='w-1/3 mx-auto mb-8 border-t-2 border-blue-200'>
+        <div class='text-3xl font-extrabold text-blue-600 mt-4'>Thank you!</div>
+      </div>`
+    ];
+
+    let currentSlide = 0;
+    let prevSlide = 0;
+
+    function renderSlides() {
+      const root = document.getElementById('ppt-root');
+      root.innerHTML = slides.map((slide, idx) => {
+        let cls = 'ppt-slide';
+        if (idx === currentSlide) cls += ' active';
+        else if (idx < currentSlide) cls += ' inactive-left';
+        else cls += ' inactive-right';
+        return `<section class="${cls}" style="">${slide}</section>`;
+      }).join('');
+      // Progress bar
+      const progress = ((currentSlide + 1) / slides.length) * 100;
+      document.getElementById('ppt-progress-bar').style.width = progress + '%';
+      // Slide number
+      document.getElementById('ppt-slide-number').textContent = `Slide ${currentSlide + 1} / ${slides.length}`;
+      // Mermaid diagrams
+      if (document.querySelector('.mermaid')) {
+        mermaid.init(undefined, document.querySelectorAll('.mermaid'));
+      }
+      // Navigation buttons
+      let nav = document.getElementById('ppt-nav');
+      if (!nav) {
+        nav = document.createElement('div');
+        nav.id = 'ppt-nav';
+        nav.className = 'ppt-nav-container';
+        document.body.appendChild(nav);
+      }
+      nav.innerHTML = `
+        <button class="ppt-nav-btn" id="ppt-prev" ${currentSlide === 0 ? 'disabled' : ''}>&larr; Previous</button>
+        <button class="ppt-nav-btn" id="ppt-next" ${currentSlide === slides.length - 1 ? 'disabled' : ''}>Next &rarr;</button>
+      `;
+      document.getElementById('ppt-prev').onclick = () => { if (currentSlide > 0) { prevSlide = currentSlide; currentSlide--; renderSlides(); } };
+      document.getElementById('ppt-next').onclick = () => { if (currentSlide < slides.length - 1) { prevSlide = currentSlide; currentSlide++; renderSlides(); } };
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        if (currentSlide < slides.length - 1) { prevSlide = currentSlide; currentSlide++; renderSlides(); }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) { prevSlide = currentSlide; currentSlide--; renderSlides(); }
+      }
+    });
+
+    // Initial render
+    renderSlides();
+  </script>
+</body>
+</html> 
