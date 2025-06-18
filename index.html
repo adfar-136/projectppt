@@ -402,12 +402,27 @@
       // Slide 5: Objective (was Project Overview)
       `<div class='ppt-frame'>
         <div class='ppt-section'>Objective</div>
-        <div class='mb-4 text-lg text-gray-700'>
-          To make the student council at our university more accessible, active, and efficient by providing a modern digital platform. The student council plays a vital role in student representation, event organization, and fostering engagement. This project aims to streamline council activities, enhance communication, and empower students and administrators through an easy-to-use portal. <br><br>
-          In particular, the platform is designed to simplify event management by making it easy to create events, assign duties, and track participation. This ensures that council-led events are well-organized, responsibilities are clear, and more students can get involved in meaningful ways, ultimately increasing the impact and reach of student activities across the university.
-        </div>
+        <ul class='list-disc ml-8 text-lg text-gray-700'>
+          <li>To develop an AI-powered chatbot that responds to diverse student queries trained using curated institutional data.</li>
+          <li>To implement intelligent query routing to escalate unresolved queries to designated authorities or student council members.</li>
+          <li>To create an application interface to convene student council activities such as registration, group assignments, etc.</li>
+          <li>To design an event management system that allows admins to create campus events and auto-assign student council members for organizing events without deadlock among the members.</li>
+          <li>To build a secure, centralized platform that improves student engagement and access to campus-related information without involving sensitive data.</li>
+        </ul>
       </div>`,
-      // Slide 6: Data Flow & Architecture (Text)
+      // Slide 6: Project Blueprint So Far
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <div class='ppt-section mb-4'>Project Blueprint So Far</div>
+        <ul class='list-disc text-lg text-gray-700 mx-auto' style='text-align:left; display:inline-block;'>
+          <li>Mapped out the complete flow and architecture for the student council portal.</li>
+          <li>Defined all user roles (Student, Council Member, Admin) and their permissions.</li>
+          <li>Outlined the model schemas for users, applications, duties, events, FAQs, and validation.</li>
+          <li>Designed the event management and duty assignment process for smooth operations.</li>
+          <li>Planned the integration of an AI-powered chatbot for student queries.</li>
+  
+        </ul>
+      </div>`,
+      // Slide 7: Data Flow & Architecture (Text)
       `<div class='ppt-frame'>
         <div class='ppt-section'>Data Flow & Architecture</div>
         <div class='mb-4'>
@@ -511,28 +526,21 @@
           <li>ValidStudentId</li>
         </ul>
       </div>`,
-      // Slide 14: ER Diagram (Mermaid)
-      `<div class='ppt-frame flex flex-col items-center justify-center h-full'>
-        <div class='ppt-section mb-4'>Work Flow</div>
-        <div style='display:flex;align-items:center;justify-content:center;width:100%;height:340px;'>
-          <div class='mermaid' style='width:500px;max-width:90vw;height:320px;display:flex;align-items:center;justify-content:center;'>
-            %%{init: {'themeVariables': { 'erNodeWidth': 90, 'erNodeHeight': 60, 'fontSize': 12 }} }%%
-            erDiagram
-              VALIDSTUDENTID ||--|| STUDENT : validates
-              STUDENT ||--o{ APPLICATION : submits
-              APPLICATION }o--|| ADMIN : reviewedBy
-              STUDENT ||--o{ DUTY : assigned
-              DUTY }o--|| EVENT : for
-              DUTY }o--|| ADMIN : assignedBy
-              STUDENT ||--o{ EVENT : proposes
-              EVENT }o--|| ADMIN : organizedBy
-              FAQ }o--|| ADMIN : createdBy
-          </div>
+      // Slide 14: Schema Design Overview
+      `<div class='ppt-frame flex flex-col items-center justify-center h-full text-center'>
+        <div class='ppt-section mb-4'>Schema Design Overview</div>
+        <div class='text-lg text-gray-700 max-w-2xl mx-auto'>
+          The following slides present the planned schema designs for each core entity in the system. These schemas define the structure and relationships of the data models that will power the student council portal.
         </div>
       </div>`,
       // Slide 15: User Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: User</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
@@ -551,7 +559,12 @@
       </div>`,
       // Slide 16: Application Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: Application</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
@@ -570,7 +583,12 @@
       </div>`,
       // Slide 17: Duty Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: Duty</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
@@ -586,7 +604,12 @@
       </div>`,
       // Slide 18: Event Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: Event</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
@@ -605,7 +628,12 @@
       </div>`,
       // Slide 19: Faq Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: Faq</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
@@ -620,7 +648,12 @@
       </div>`,
       // Slide 20: ValidStudentId Model Table
       `<div class='ppt-frame'>
+        <div class='flex items-center mb-2'>
+          <span class='inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mr-3'>Schema (Planned)</span>
+          <span class='text-base text-gray-600'>Planned Schema for Department Review</span>
+        </div>
         <div class='ppt-section'>Model: ValidStudentId</div>
+        <div class='font-bold text-blue-700 mb-2'>Schema</div>
         <table class='ppt-table'>
           <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
           <tbody>
